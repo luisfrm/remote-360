@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "install-all": "cd frontend && npm install && cd ../backend && npm install",
-    "start-frontend": "cd frontend && npm start",
-    "start-backend": "cd backend && npm start",
-    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\""
+    "install-all": "cd client && bun install && cd ../api && bun install",
+    "start-frontend": "cd client && bun start",
+    "start-backend": "cd api && bun start",
+    "start": "concurrently \"bun run start-frontend\" \"bun run start-backend\"",
+    "test-frontend": "cd client && bun run test",
+    "test-backend": "cd api && bun run test",
+    "test": "concurrently \"bun run test-frontend\" \"bun run test-backend\""
   },
   "keywords": [],
   "author": "Luis Rivas",
