@@ -1,0 +1,17 @@
+{
+  "name": "remote-360",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "install-all": "cd frontend && npm install && cd ../backend && npm install",
+    "start-frontend": "cd frontend && npm start",
+    "start-backend": "cd backend && npm start",
+    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\""
+  },
+  "keywords": [],
+  "author": "Luis Rivas",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
