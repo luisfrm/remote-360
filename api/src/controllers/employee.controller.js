@@ -24,6 +24,24 @@ class EmployeeController {
     }
   }
 
+  static async createEmployee(req, res) {
+    try {
+      const { firstName, lastName, department, position, userId } = req.body;
+      const employee = new Employee({
+        firstName,
+        lastName,
+        department,
+        position,
+        user: userId
+      });
+      await employee.save();
+      res.status(201).json(employee);
+    } catch (error) {
+      console.error('Error creating employee:', error);
+      res.status(500).json({ message: 'Error creating employee' });
+    }
+  }
+
   static async updateEmployee(req, res) {
     try {
       const { firstName, lastName, department, position } = req.body;

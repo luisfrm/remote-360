@@ -73,6 +73,28 @@ class UserController {
     // The client is responsible for removing the token.
     res.json({ message: 'Logout successful' });
   }
+
+  static async updateNotificationPreference(req, res) {
+    try {
+      const { userId } = req.user;
+      const { preference } = req.body;
+
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { notificationPreference: preference },
+        { new: true }
+      );
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.json({ message: 'Notification preference updated', preference: user.notificationPreference });
+    } catch (error) {
+      console.error('Error updating notification preference:', error);
+      res.status(500).json({ message: 'Error updating notification preference' });
+    }
+  }
 }
 
 module.exports = UserController;

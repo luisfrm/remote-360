@@ -4,7 +4,16 @@ const Schema = mongoose.Schema;
 const evaluationSchema = new mongoose.Schema({
 	employee: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
 	evaluator: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
-	period: { type: String, required: true }, // e.g., "Q2 2024"
+	masterEvaluation: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "MasterEvaluation",
+		required: true,
+	},
+	evaluationType: {
+		type: String,
+		enum: ["Self", "Peer", "Supervisor", "Subordinate"],
+		required: true,
+	},
 	status: {
 		type: String,
 		enum: ["Pending", "In Progress", "Completed"],
