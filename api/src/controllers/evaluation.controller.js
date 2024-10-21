@@ -3,6 +3,8 @@ const MasterEvaluation = require('../models/masterEvaluation.model');
 const Employee = require('../models/employee.model');
 
 class EvaluationController {
+
+  // This method is used to create a new 360 evaluation
   static async initiate360Evaluation(req, res) {
     try {
       const { employeeId, period, categories, deadline } = req.body;
@@ -69,6 +71,7 @@ class EvaluationController {
     }
   }
 
+  // this method is used to get the status of a 360 evaluation process
   static async get360EvaluationStatus(req, res) {
     try {
       const { masterEvaluationId } = req.params;
@@ -91,6 +94,7 @@ class EvaluationController {
     }
   }
 
+  // This method is used by the evaluator to marked their evaluation as completed
   static async submit360Evaluation(req, res) {
     try {
       const { evaluationId } = req.params;
@@ -127,6 +131,7 @@ class EvaluationController {
     }
   }
 
+  // This method is used by the manager to generate a report for a 360 process
   static async generate360Report(req, res) {
     try {
       const { masterEvaluationId } = req.params;
@@ -189,6 +194,7 @@ class EvaluationController {
     }
   }
 
+  // This method is used by the employee to get their pending evaluations
   static async getUserPendingEvaluations(req, res) {
     try {
       const userId = req.user.userId;
@@ -224,6 +230,7 @@ class EvaluationController {
     }
   }
 
+  // This method is used by the manager to get pending evaluations for their subordinates
   static async getPendingMembersForMasterEvaluation(req, res) {
     try {
       const { masterEvaluationId } = req.params;

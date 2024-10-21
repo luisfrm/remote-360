@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const Employee = require("../models/employee.model");
 const bcrypt = require("bcryptjs");
 
 async function createInitialAdmin() {
@@ -19,7 +20,17 @@ async function createInitialAdmin() {
       role: "Admin"
     });
 
+    const adminEmployee = new Employee({
+      user: admin._id,
+      firstName: "Admin",
+      lastName: "User",
+      department: "Admin",
+      position: "Admin",
+      hireDate: new Date()
+    })
+
     await admin.save();
+    await adminEmployee.save();
     console.log("Initial admin user created successfully");
   } catch (error) {
     console.error("Error creating initial admin:", error);
