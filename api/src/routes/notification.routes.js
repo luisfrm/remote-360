@@ -12,10 +12,4 @@ router.post('/subscribe',
   NotificationController.subscribe
 );
 
-router.put('/preferences', 
-  authMiddleware(['Employee', 'Manager', 'Admin']), 
-  validateSchema(notificationSchemas.updatePreferences),
-  NotificationController.updateNotificationPreferences
-);
-
 module.exports = router;

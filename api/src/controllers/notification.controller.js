@@ -26,20 +26,6 @@ class NotificationController {
     }
   }
 
-  static async updateNotificationPreferences(req, res) {
-    try {
-      const { userId } = req.user;
-      const { frequency } = req.body;
-
-      await User.findByIdAndUpdate(userId, { notificationPreference: frequency });
-
-      res.status(200).json({ message: 'Notification preferences updated successfully' });
-    } catch (error) {
-      console.error('Error updating notification preferences:', error);
-      res.status(500).json({ message: 'Error updating notification preferences' });
-    }
-  }
-
   static async sendNotification(userId, payload) {
     try {
       const subscription = await Subscription.findOne({ userId });
