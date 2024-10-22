@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const User = require('../models/user.model');
 const Employee = require('../models/employee.model');
-const jwt = require('../utils/jwt');
 const bcrypt = require('bcryptjs');
+const { generateJwt } = require('../utils/jwt');
 
 class UserController {
   static async register(req, res) {
@@ -46,9 +46,20 @@ class UserController {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      const token = jwt.generateToken(user);
+      const token = generateJwt({
+        userId: user._id,
+        role: user.role,
+        username: user.username
+      });
 
-      res.json({ token });
+      const userResponse = {
+        id: user._id,
+        role: user.role,
+        username: user.username,
+        email: user.email
+      }
+
+      res.json({ token, user: userResponse});
     } catch (error) {
       console.error('Error logging in:', error);
       res.status(500).json({ message: 'Error logging in' });
@@ -58,49 +69,81 @@ class UserController {
   static async createUserAndEmployee(req, res) {
     const session = await mongoose.startSession();
     session.startTransaction();
-
+  
     try {
-      const { email, password, role, firstName, lastName, department, position } = req.body;
-
-      const existingUser = await User.findOne({ email }).session(session);
-      if (existingUser) {
-        await session.abortTransaction();
-        session.endSession();
-        return res.status(400).json({ message: 'User already exists' });
+      const { 
+        username, email, password, role, 
+        firstName, lastName, department, position, 
+        hireDate 
+      } = req.body;
+  
+      // Verify role
+      if (!['Admin', 'Manager', 'Employee'].includes(role)) {
+        res.status(400).json({ message: 'Invalid role' });
       }
-
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      const user = new User({
-        email,
-        password: hashedPassword,
-        role
-      });
-
+  
+      // Check if user is manager or admin
+      const isManager = role === 'Manager' || role === 'Admin';
+  
+      // Create user
+      const user = new User({ username, email, password, role });
       await user.save({ session });
-
+  
+      // Verify if exists a manager for the department
+      const existingManager = await Employee.findOne({ 
+        department, 
+        isManager: true 
+      }).session(session);
+  
+      let managerToAssign = null;
+  
+      if (isManager) {
+        if (existingManager) {
+          res.status(400).json({ message: 'There is already a manager for this department' });
+        }
+      } else {
+        managerToAssign = existingManager ? existingManager._id : null;
+      }
+  
+      // Crear el empleado
       const employee = new Employee({
         user: user._id,
         firstName,
         lastName,
         department,
-        position
+        position,
+        hireDate,
+        isManager,
+        manager: managerToAssign
       });
-
+  
       await employee.save({ session });
-
+  
+      // Si es un manager, actualizar a los empleados del departamento
+      if (isManager) {
+        await Employee.updateMany(
+          { department, _id: { $ne: employee._id } },
+          { $set: { manager: employee._id } },
+          { session }
+        );
+      }
+  
       await session.commitTransaction();
       session.endSession();
-
-      res.status(201).json({ message: 'User and employee created successfully' });
+  
+      res.status(201).json({ 
+        message: "Usuario y empleado creados exitosamente", 
+        userId: user._id, 
+        employeeId: employee._id,
+        role: user.role,
+        isManager: employee.isManager
+      });
     } catch (error) {
       await session.abortTransaction();
       session.endSession();
-      console.error('Error creating user and employee:', error);
-      res.status(500).json({ message: 'Error creating user and employee' });
+      res.status(400).json({ message: error.message });
     }
-  }
+  };
 
   static async getProfile(req, res) {
     try {

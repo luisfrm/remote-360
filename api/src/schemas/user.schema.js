@@ -1,5 +1,38 @@
 const { z } = require("zod");
 
+const DepartmentEnum = z.enum([
+  'IT',
+  'HR',
+  'Finance',
+  'Marketing',
+  'Sales',
+  'Operations',
+  'Customer Service',
+  'Research and Development',
+  'Legal',
+  'Executive'
+], {
+  required_error: "Department is required",
+  invalid_type_error: "Invalid department",
+});
+
+const PositionEnum = z.enum([
+  'Intern',
+  'Entry Level',
+  'Associate',
+  'Senior Associate',
+  'Manager',
+  'Senior Manager',
+  'Director',
+  'Vice President',
+  'Senior Vice President',
+  'C-Level Executive',
+  'Chief Executive Officer'
+], {
+  required_error: "Position is required",
+  invalid_type_error: "Invalid position",
+});
+
 const registerSchema = z.object({
 	username: z
 		.string({
@@ -68,15 +101,10 @@ const registerUserAndEmployeeSchema = z.object({
 		required_error: "Last name is required",
 		invalid_type_error: "Last name must be a string",
 	}),
-	position: z.string({
-		required_error: "Position is required",
-		invalid_type_error: "Position must be a string",
-	}),
+	
+	position: PositionEnum,
 
-	department: z.string({
-		required_error: "Department is required",
-		invalid_type_error: "Department must be a string",
-	}),
+  department: DepartmentEnum,
 
 	hireDate: z.date({
 		required_error: "Hire date is required",

@@ -257,42 +257,44 @@ class EvaluationController {
     }
   }
 
-  static async updateFeedback(req, res) {
+  static async updateEvaluation(req, res) {
     try {
-      const { feedbackId } = req.params;
-      const { content } = req.body;
+      const { evaluationId } = req.params;
+      const { categories, overallScore, comments } = req.body;
       
-      const feedback = await Feedback.findByIdAndUpdate(
-        feedbackId,
-        { content },
+      const evaluation = await Evaluation.findByIdAndUpdate(
+        evaluationId,
+        { categories, overallScore, comments },
         { new: true }
       );
-      
-      if (!feedback) {
-        return res.status(404).json({ message: 'Feedback not found' });
+
+      if (!evaluation) {
+        return res.status(404).json({ message: 'Evaluation not found' });
       }
-      
-      res.status(200).json({ message: 'Feedback updated successfully', feedback });
-    } catch (error) {
-      console.error('Error updating feedback:', error);
-      res.status(500).json({ message: 'Error updating feedback' });
+
+      res.status(200).json({ message: 'Evaluation updated successfully', evaluation });
+    }
+    catch (error) {
+      console.error('Error updating evaluation:', error);
+      res.status(500).json({ message: 'Error updating evaluation' });
     }
   }
 
-  static async deleteFeedback(req, res) {
+  static async deleteEvaluation(req, res) {
     try {
-      const { feedbackId } = req.params;
+      const { evaluationId } = req.params;
       
-      const feedback = await Feedback.findByIdAndDelete(feedbackId);
-      
-      if (!feedback) {
-        return res.status(404).json({ message: 'Feedback not found' });
+      const evaluation = await Evaluation.findByIdAndDelete(evaluationId);
+
+      if (!evaluation) {
+        return res.status(404).json({ message: 'Evaluation not found' });
       }
-      
-      res.status(200).json({ message: 'Feedback deleted successfully' });
-    } catch (error) {
-      console.error('Error deleting feedback:', error);
-      res.status(500).json({ message: 'Error deleting feedback' });
+
+      res.status(200).json({ message: 'Evaluation deleted successfully' });
+    }
+    catch (error) {
+      console.error('Error deleting evaluation:', error);
+      res.status(500).json({ message: 'Error deleting evaluation' });
     }
   }
 }
