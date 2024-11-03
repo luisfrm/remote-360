@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/user.model');
 const Employee = require('../models/employee.model');
 const bcrypt = require('bcryptjs');
-const { generateJwt } = require('../utils/jwt');
+const { generateJwt, verifyJwt } = require('../utils/jwt')
 
 class UserController {
   static async register(req, res) {
@@ -80,6 +80,16 @@ class UserController {
       // Verify role
       if (!['Admin', 'Manager', 'Employee'].includes(role)) {
         res.status(400).json({ message: 'Invalid role' });
+      }
+
+      const existingEmail = await User.findOne({ email });
+      if (existingEmail) {
+        return res.status(400).json({ message: 'Email already exists' });
+      }
+
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        return res.status(400).json({ message: 'User already exists' });
       }
   
       // Check if user is manager or admin
@@ -240,6 +250,31 @@ class UserController {
     } catch (error) {
       console.error('Error updating password:', error);
       res.status(500).json({ message: 'Error updating password' });
+    }
+  }
+
+  static async validateToken(req, res) {
+    const { token } = req.body;
+    if(!token) return res.status(401).json({ message: "Unauthorized" });
+
+    try {
+      const decoded = verifyJwt(token);
+      if (!decoded) return res.status(401).json({ message: 'Token is not valid' });
+
+      const user = await User.findById(decoded.userId);
+
+      if (!user) return res.status(404).json({ message: 'User not found' });
+
+      res.status(200).json({
+        user: { 
+          id: user._id,
+          email: user.email,
+          role: user.role,
+          username: user.username
+         }
+      });
+    } catch (error) {
+      res.status(401).json({ message: "Invalid token" });
     }
   }
 }

@@ -15,6 +15,8 @@ router.post('/register', authMiddleware(['Admin']), validateSchema(registerSchem
 router.post('/login', validateSchema(loginSchema), UserController.login);
 router.post('/create-user-and-employee', authMiddleware(['Admin']), validateSchema(registerUserAndEmployeeSchema), UserController.createUserAndEmployee);
 
+router.post('/validate-token', UserController.validateToken);
+
 router.get('/profile', authMiddleware(), UserController.getProfile);
 router.put('/profile', authMiddleware(), validatePartialSchema(registerSchema), UserController.updateProfile);
 router.put('/password', authMiddleware(), validateSchema(updatePasswordSchema), UserController.updatePassword);

@@ -1,16 +1,18 @@
 export interface Employee {
-  _id: string;
+  id: string;
   firstName: string;
   lastName: string;
+  department: string;
   email: string;
   position: string;
-  department: string;
+  userId: string;
 }
 
 export interface AuthState {
 	token: string | null;
 	isAuthenticated: boolean;
 	user: { email: string; role: string; username: string; id: string } | null;
+  isLoading: boolean;
 }
 
 export interface Evaluation {
@@ -32,4 +34,24 @@ export interface PendingEvaluation {
   employeeName: string;
   evaluationType: string;
   deadline: string;
+}
+
+export interface CreateUserAndEmployeeRequest {
+  username: string;
+  email: string;
+  password: string;
+  role: 'Admin' | 'Manager' | 'Employee';
+  firstName: string;
+  lastName: string;
+  department: string;
+  position: string;
+  hireDate: string;
+}
+
+export interface CreateUserAndEmployeeResponse {
+  message: string;
+  userId: string;
+  employeeId: string;
+  role: string;
+  isManager: boolean;
 }

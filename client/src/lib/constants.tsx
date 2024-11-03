@@ -1,5 +1,7 @@
 import { Home, Users, ClipboardList, BarChart2, User, Settings } from 'lucide-react';
 
+export const API_URL = 'http://localhost:4506/api';
+
 export const navItems = [
   { name: 'Dashboard', path: '/dashboard', icon: <Home className="mr-2" /> },
   { name: 'Evaluaciones', path: '/evaluations', icon: <ClipboardList className="mr-2" /> },

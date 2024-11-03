@@ -106,7 +106,7 @@ const registerUserAndEmployeeSchema = z.object({
 
   department: DepartmentEnum,
 
-	hireDate: z.date({
+	hireDate: z.string({
 		required_error: "Hire date is required",
 		invalid_type_error: "Hire date must be a valid date",
 	}),

@@ -39,7 +39,7 @@ const employeeSchema = new mongoose.Schema({
   position: { type: String, required: true, trim: true, enum: Object.values(PositionEnum) },
   isManager: { type: Boolean, default: false },
   manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', default: null },
-  hireDate: { type: Date },
+  hireDate: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

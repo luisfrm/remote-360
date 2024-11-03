@@ -19,67 +19,15 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import Template from "./Template";
 import { roles } from "@/lib/constants";
+import { useGetEmployeesQuery } from "@/lib/api";
+import CreateUserEmployeeForm from "@/components/CreateUserAndEmployeForm";
 
 const Employees: React.FC = () => {
 	const [isNewEmployeeDialogOpen, setIsNewEmployeeDialogOpen] = useState(false);
 	const role = useSelector((state: RootState) => state.auth.user?.role);
-
-	// TODO: Replace with actual data from API
-	const employeesData = [
-		{
-			id: 1,
-			name: "Ana Martínez",
-			email: "ana.martinez@example.com",
-			position: "Desarrollador",
-			department: "IT",
-		},
-		{
-			id: 2,
-			name: "Pedro Sánchez",
-			email: "pedro.sanchez@example.com",
-			position: "Diseñador",
-			department: "Diseño",
-		},
-		{
-			id: 3,
-			name: "Laura Fernández",
-			email: "laura.fernandez@example.com",
-			position: "Gerente de Proyecto",
-			department: "Administración",
-		},
-		{
-			id: 4,
-			name: "Carlos Rodríguez",
-			email: "carlos.rodriguez@example.com",
-			position: "Analista de Datos",
-			department: "IT",
-		},
-		{
-			id: 5,
-			name: "Elena Gómez",
-			email: "elena.gomez@example.com",
-			position: "Recursos Humanos",
-			department: "RRHH",
-		},
-	];
-
-	const handleCreateNewEmployee = (event: React.FormEvent) => {
-		event.preventDefault();
-		// TODO: Implement logic to create a new employee and user
-		// This should call the /api/auth/create-user-and-employee endpoint
-		setIsNewEmployeeDialogOpen(false);
-	};
+	const { data: employeesData, error } = useGetEmployeesQuery();
 
 	const canManageEmployees = role === roles.admin || role === roles.manager;
 
@@ -96,7 +44,7 @@ const Employees: React.FC = () => {
 							<DialogTrigger asChild>
 								<Button>Agregar Nuevo Empleado</Button>
 							</DialogTrigger>
-							<DialogContent>
+							<DialogContent className="sm:max-w-[750px] h-dvh lg:h-[85dvh] overflow-auto">
 								<DialogHeader>
 									<DialogTitle>Crear Nuevo Empleado</DialogTitle>
 									<DialogDescription>
@@ -104,87 +52,54 @@ const Employees: React.FC = () => {
 										cuenta de usuario.
 									</DialogDescription>
 								</DialogHeader>
-								<form onSubmit={handleCreateNewEmployee} className="space-y-4">
-									<div>
-										<Label htmlFor="name">Nombre Completo</Label>
-										<Input id="name" placeholder="Nombre del empleado" />
-									</div>
-									<div>
-										<Label htmlFor="email">Correo Electrónico</Label>
-										<Input
-											id="email"
-											type="email"
-											placeholder="correo@ejemplo.com"
-										/>
-									</div>
-									<div>
-										<Label htmlFor="position">Posición</Label>
-										<Input id="position" placeholder="Posición del empleado" />
-									</div>
-									<div>
-										<Label htmlFor="department">Departamento</Label>
-										<Input id="department" placeholder="Departamento" />
-									</div>
-									<div>
-										<Label htmlFor="role">Rol</Label>
-										<Select>
-											<SelectTrigger>
-												<SelectValue placeholder="Seleccione el rol" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="employee">Empleado</SelectItem>
-												<SelectItem value="manager">Gerente</SelectItem>
-												{
-                          role === roles.admin && (
-                            <SelectItem value="admin">Administrador</SelectItem>
-                          )
-                        }
-											</SelectContent>
-										</Select>
-									</div>
-									<Button type="submit">Crear Empleado</Button>
-								</form>
+								<CreateUserEmployeeForm />
 							</DialogContent>
 						</Dialog>
 					)}
 				</div>
 
 				{/* Employees Table */}
-				<Card>
-					<CardHeader>
-						<CardTitle>Lista de Empleados</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>Nombre</TableHead>
-									<TableHead>Correo Electrónico</TableHead>
-									<TableHead>Posición</TableHead>
-									<TableHead>Departamento</TableHead>
-									{canManageEmployees && <TableHead>Acciones</TableHead>}
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{employeesData.map((employee) => (
-									<TableRow key={employee.id}>
-										<TableCell>{employee.name}</TableCell>
-										<TableCell>{employee.email}</TableCell>
-										<TableCell>{employee.position}</TableCell>
-										<TableCell>{employee.department}</TableCell>
-										{canManageEmployees && (
-											<TableCell>
-												<Button variant="outline" size="sm">
-													Editar
-												</Button>
-											</TableCell>
-										)}
+				{!error && (
+					<Card>
+						<CardHeader>
+							<CardTitle>Lista de Empleados</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead>Nombre</TableHead>
+										<TableHead>Correo Electrónico</TableHead>
+										<TableHead>Posición</TableHead>
+										<TableHead>Departamento</TableHead>
+										{canManageEmployees && <TableHead>Acciones</TableHead>}
 									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</CardContent>
-				</Card>
+								</TableHeader>
+								<TableBody>
+									{employeesData &&
+										employeesData.length > 0 &&
+										employeesData.map((employee) => (
+											<TableRow key={employee.id}>
+												<TableCell>
+													{employee.firstName} {employee.lastName}
+												</TableCell>
+												<TableCell>{employee.email}</TableCell>
+												<TableCell>{employee.position}</TableCell>
+												<TableCell>{employee.department}</TableCell>
+												{canManageEmployees && (
+													<TableCell>
+														<Button variant="outline" size="sm">
+															Editar
+														</Button>
+													</TableCell>
+												)}
+											</TableRow>
+										))}
+								</TableBody>
+							</Table>
+						</CardContent>
+					</Card>
+				)}
 			</div>
 		</Template>
 	);

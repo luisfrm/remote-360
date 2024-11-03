@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -11,9 +11,34 @@ import Reports from './pages/Reports';
 import Employees from './pages/Employees';
 import NotFound from './pages/404';
 import Settings from './pages/Settings';
+import { setCredentials } from './features/auth/authSlice';
+import { useValidateTokenMutation } from './lib/api';
+import DotSpinner from './components/DotSpinner';
 
 const App: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const token = localStorage.getItem('token');
+  const dispatch = useDispatch();
+  const [validateToken, { isLoading }] = useValidateTokenMutation();
+
+  useEffect(() => {
+    if (token) {
+      validateToken({ token })
+        .unwrap()
+        .then((res) => {
+          console.log(res)
+          dispatch(setCredentials({ token, user: res.user }));
+        })
+        .catch((err) => {
+          console.error(err);
+          localStorage.removeItem('token');
+        });
+    }
+  }, [token, dispatch, validateToken]);
+
+  if (isLoading) {
+    return (<div className='w-screen min-h-dvh flex items-center justify-center'><DotSpinner color="bg-blue-600" /></div>);
+  }
 
   return (
     <Router>

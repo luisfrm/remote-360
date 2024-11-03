@@ -5,6 +5,7 @@ const initialState: AuthState = {
   token: null,
   isAuthenticated: false,
   user: null,
+  isLoading: false,
 };
 
 const authSlice = createSlice({
@@ -15,6 +16,10 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.user = action.payload.user;
       state.isAuthenticated = true;
+      state.isLoading = false;
+
+      // Save token to local storage
+      localStorage.setItem('token', action.payload.token);
     },
     logout: (state) => {
       state.token = null;

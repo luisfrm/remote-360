@@ -7,6 +7,7 @@ import Sidebar from "@/components/Sidebar";
 import Navigation from "@/components/Navigation";
 import { LogOut } from "lucide-react";
 import { RootState } from "@/store";
+import { Toaster } from "@/components/ui/toaster"
 
 interface TemplateProps {
 	children: ReactNode;
@@ -66,6 +67,7 @@ const Template: FunctionComponent<TemplateProps> = ({ children }) => {
 					</div>
 				</main>
 			</div>
+			<Toaster />
 		</div>
 	);
 };
