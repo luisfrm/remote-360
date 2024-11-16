@@ -1,18 +1,5 @@
 const mongoose = require('mongoose');
 
-const DepartmentEnum = {
-  IT: 'IT',
-  HR: 'HR',
-  FINANCE: 'Finance',
-  MARKETING: 'Marketing',
-  SALES: 'Sales',
-  OPERATIONS: 'Operations',
-  CUSTOMER_SERVICE: 'Customer Service',
-  RESEARCH_AND_DEVELOPMENT: 'Research and Development',
-  LEGAL: 'Legal',
-  EXECUTIVE: 'Executive'
-};
-
 const PositionEnum = {
   INTERN: 'Intern',
   ENTRY_LEVEL: 'Entry Level',
@@ -28,20 +15,24 @@ const PositionEnum = {
 };
 
 const employeeSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  firstName: { type: String, required: true, trim: true },
-  lastName: { type: String, required: true, trim: true },
-  department: { type: String, required: true, trim: true, enum: Object.values(DepartmentEnum) },
-  position: { type: String, required: true, trim: true, enum: Object.values(PositionEnum) },
-  isManager: { type: Boolean, default: false },
-  manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', default: null },
-  hireDate: { type: String },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
+		required: true,
+	},
+	firstName: { type: String, required: true, trim: true },
+	lastName: { type: String, required: true, trim: true },
+	department: { type: mongoose.Schema.Types.ObjectId, ref: "Department", required: true },
+	position: {
+		type: String,
+		required: true,
+		trim: true,
+		enum: Object.values(PositionEnum),
+		default: PositionEnum.INTERN,
+	},
+	hireDate: { type: String },
+	createdAt: { type: Date, default: Date.now },
+	updatedAt: { type: Date, default: Date.now },
 });
 
 // Índice único para asegurar solo un manager por departamento

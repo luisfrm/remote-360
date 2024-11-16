@@ -76,11 +76,6 @@ class UserController {
         firstName, lastName, department, position, 
         hireDate 
       } = req.body;
-  
-      // Verify role
-      if (!['Admin', 'Manager', 'Employee'].includes(role)) {
-        res.status(400).json({ message: 'Invalid role' });
-      }
 
       const existingEmail = await User.findOne({ email });
       if (existingEmail) {

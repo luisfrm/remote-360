@@ -19,32 +19,30 @@ const PORT = process.env.PORT || 3000;
 const createApp = async () => {
   const app = express();
 
-  const allowedOrigins = ["http://localhost:5173"];
+  // const allowedOrigins = ["http://localhost:5174"];
 
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  }));
+  app.use(cors());
   app.use(express.json());
   app.use(morgan("dev"));
   app.use(cookieParser());
 
   // Connect to MongoDB
   try {
-    await connectDB();
-    console.log("Connected to MongoDB");
-    
-    // Create initial admin user
-    await createInitialAdmin();
+    connectDB()
+			.then(async () => {
+				console.log("Connected to MongoDB");
 
-    // Initialize scheduled tasks
-    initializeScheduledTasks();
+				// Create initial admin user
+				await createInitialAdmin();
+
+				// Initialize scheduled tasks
+				initializeScheduledTasks();
+			})
+			.catch((error) => {
+				console.error("Error connecting to MongoDB:", error);
+				process.exit(1);
+			});
+    
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1);
