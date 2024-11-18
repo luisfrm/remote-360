@@ -2,7 +2,7 @@ const { verifyJwt, isTokenExpiringSoon, generateJwt } = require('../utils/jwt.js
 const getToken = require('../utils/getToken.js');
 const User = require('../models/user.model');
 
-function authMiddleware(allowedRoles = []) {
+function authMiddleware(allowedRoles = ['Employee', 'Manager', 'Admin']) {
   return async (req, res, next) => {
     const token = getToken(req);
 
