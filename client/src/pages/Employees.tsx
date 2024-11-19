@@ -71,7 +71,7 @@ const Employees: React.FC = () => {
 										<TableHead>Nombre</TableHead>
 										<TableHead>Correo Electrónico</TableHead>
 										<TableHead>Posición</TableHead>
-										<TableHead>Departamento</TableHead>
+										<TableHead>Departmento</TableHead>
 										{canManageEmployees && <TableHead>Acciones</TableHead>}
 									</TableRow>
 								</TableHeader>
@@ -85,7 +85,7 @@ const Employees: React.FC = () => {
 												</TableCell>
 												<TableCell>{employee.email}</TableCell>
 												<TableCell>{employee.position}</TableCell>
-												<TableCell>{employee.department}</TableCell>
+												<TableCell>{employee.department.name}</TableCell>
 												{canManageEmployees && (
 													<TableCell>
 														<Button variant="outline" size="sm">

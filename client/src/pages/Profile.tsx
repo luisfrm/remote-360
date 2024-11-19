@@ -15,6 +15,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import Template from "./Template";
+import H1_Heading from "@/components/H1_Heading";
 
 const Profile: React.FC = () => {
 	const { user } = useSelector((state: RootState) => state.auth);
@@ -34,7 +35,7 @@ const Profile: React.FC = () => {
 	return (
 		<Template>
 			<div className="space-y-6">
-				<h1 className="text-3xl font-bold text-gray-900">Mi Perfil</h1>
+				<H1_Heading>Mi Perfil</H1_Heading>
 
 				<Card>
 					<CardHeader>

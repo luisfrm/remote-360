@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import Template from "./Template";
+import H1_Heading from "@/components/H1_Heading";
 
 const Settings: React.FC = () => {
 	const { user } = useSelector((state: RootState) => state.auth);
@@ -58,7 +59,7 @@ const Settings: React.FC = () => {
 	return (
 		<Template>
 			<div className="space-y-6">
-				<h1 className="text-3xl font-bold text-gray-900">Configuración</h1>
+				<H1_Heading>Configuración</H1_Heading>
 
 				{successMessage && (
 					<Alert>
