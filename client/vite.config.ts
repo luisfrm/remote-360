@@ -10,6 +10,15 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: './index.html',
+      },
+    },
+  },
+  // Asegúrate de que el archivo _redirects se copie a la carpeta de compilación
+  publicDir: 'public',
   define: {
     "process.env": process.env,
   },
