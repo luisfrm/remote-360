@@ -1,11 +1,12 @@
 import { RootState } from "@/store";
 import { Employee, PendingEvaluation, Evaluation, CreateUserAndEmployeeResponse, CreateUserAndEmployeeRequest } from "./types"; // Adjust the import path as necessary
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_URL } from "./constants";
 
 export const api = createApi({
 	reducerPath: "api",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "http://localhost:4506/api",
+		baseUrl: API_URL,
 		prepareHeaders: (headers, { getState }) => {
 			const token = (getState() as RootState).auth.token;
 			if (token) {

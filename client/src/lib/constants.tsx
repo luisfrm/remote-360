@@ -1,6 +1,6 @@
 import { Home, Users, ClipboardList, BarChart2, User, Settings, Network } from 'lucide-react';
 
-export const API_URL = 'http://localhost:4506/api';
+export const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
 export const navItems = [
   { name: 'Dashboard', path: '/dashboard', icon: <Home className="mr-2" /> },
