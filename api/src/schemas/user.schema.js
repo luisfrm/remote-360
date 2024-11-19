@@ -1,21 +1,5 @@
 const { z } = require("zod");
 
-const DepartmentEnum = z.enum([
-  'IT',
-  'HR',
-  'Finance',
-  'Marketing',
-  'Sales',
-  'Operations',
-  'Customer Service',
-  'Research and Development',
-  'Legal',
-  'Executive'
-], {
-  required_error: "Department is required",
-  invalid_type_error: "Invalid department",
-});
-
 const PositionEnum = z.enum([
   'Intern',
   'Entry Level',
@@ -104,7 +88,10 @@ const registerUserAndEmployeeSchema = z.object({
 	
 	position: PositionEnum,
 
-  department: DepartmentEnum,
+  department: z.string({
+		required_error: "Department ID is required",
+		invalid_type_error: "Department ID must be a string",
+	}),
 
 	hireDate: z.string({
 		required_error: "Hire date is required",
