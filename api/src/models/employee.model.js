@@ -35,10 +35,4 @@ const employeeSchema = new mongoose.Schema({
 	updatedAt: { type: Date, default: Date.now },
 });
 
-// Índice único para asegurar solo un manager por departamento
-employeeSchema.index({ department: 1, isManager: 1 }, { 
-  unique: true, 
-  partialFilterExpression: { isManager: true } 
-});
-
 module.exports = mongoose.model('Employee', employeeSchema);

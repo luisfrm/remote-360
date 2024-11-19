@@ -1,10 +1,11 @@
-import { Home, Users, ClipboardList, BarChart2, User, Settings } from 'lucide-react';
+import { Home, Users, ClipboardList, BarChart2, User, Settings, Network } from 'lucide-react';
 
 export const API_URL = 'http://localhost:4506/api';
 
 export const navItems = [
   { name: 'Dashboard', path: '/dashboard', icon: <Home className="mr-2" /> },
   { name: 'Evaluaciones', path: '/evaluations', icon: <ClipboardList className="mr-2" /> },
+  { name: 'Departmentos', path: '/departments', icon: <Network className="mr-2" /> },
   { name: 'Empleados', path: '/employees', icon: <Users className="mr-2" /> },
   { name: 'Reportes', path: '/reports', icon: <BarChart2 className="mr-2" /> },
   { name: 'Perfil', path: '/profile', icon: <User className="mr-2" /> },

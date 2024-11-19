@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Template from "./Template";
+import H1_Heading from "@/components/H1_Heading";
 
 const Dashboard: React.FC = () => {
 	// TODO: Replace with actual data from API
@@ -53,7 +54,7 @@ const Dashboard: React.FC = () => {
 	return (
 		<Template>
 			<div className="space-y-6">
-				<h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+				<H1_Heading>Dashboard</H1_Heading>
 
 				{/* Quick Summary */}
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -98,7 +99,7 @@ const Dashboard: React.FC = () => {
 				{/* Performance Chart */}
 				<Card>
 					<CardHeader>
-						<CardTitle>Puntuaciones Promedio por Departamento</CardTitle>
+						<CardTitle>Puntuaciones Promedio por Departmento</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="h-[300px]">

@@ -3,12 +3,13 @@ const Employee = require('../models/employee.model');
 class EmployeeController {
   static async getAllEmployees(req, res) {
     try {
-      const employeesData = await Employee.find().populate('user', 'email');
+      const employeesData = await Employee.find().populate('user', 'email').populate('department');
       const employees = employeesData.map(employee => {
         const { _id, firstName, lastName, department, position, user } = employee;
         return { id: _id, firstName, lastName, department, position, email: user.email, userId: user._id };
       });
-      res.json(employees);
+      console.log(employees)
+      res.status(200).json(employees);
     } catch (error) {
       console.error('Error fetching employees:', error);
       res.status(500).json({ message: 'Error fetching employees' });

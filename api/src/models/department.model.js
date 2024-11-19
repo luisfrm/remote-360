@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const departamentSchema = new mongoose.Schema({
+const departmentSchema = new mongoose.Schema({
 	name: { type: String, required: true, trim: true },
 	description: { type: String, required: false, trim: true },
 	managerId: { type: mongoose.Schema.Types.ObjectId, ref: "Employee", default: null },
@@ -8,4 +8,4 @@ const departamentSchema = new mongoose.Schema({
 	updatedAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Departament', departamentSchema);
+module.exports = mongoose.model('Department', departmentSchema);
