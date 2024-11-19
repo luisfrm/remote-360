@@ -24,8 +24,8 @@ async function createInitialAdmin() {
       user: admin._id,
       firstName: "Admin",
       lastName: "User",
-      department: "Admin",
-      position: "Admin",
+      department: "IT",
+      position: "Manager",
       hireDate: new Date()
     })
 
