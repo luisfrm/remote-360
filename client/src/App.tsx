@@ -15,6 +15,9 @@ import { setCredentials } from './features/auth/authSlice';
 import { useValidateTokenMutation } from './lib/api';
 import DotSpinner from './components/DotSpinner';
 import { Toaster } from 'sonner'
+import LandingPage from './pages/Landing';
+import ProtectedRoute from './pages/ProtectedRoute';
+import Department from './pages/Department';
 
 
 const App: React.FC = () => {
@@ -28,7 +31,6 @@ const App: React.FC = () => {
       validateToken({ token })
         .unwrap()
         .then((res) => {
-          console.log(res)
           dispatch(setCredentials({ token, user: res.user }));
         })
         .catch((err) => {
@@ -43,43 +45,26 @@ const App: React.FC = () => {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
-        <Route 
-          path="/dashboard" 
-          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/evaluations" 
-          element={isAuthenticated ? <Evaluations /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/employees" 
-          element={isAuthenticated ? <Employees /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/profile" 
-          element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/evaluation/:id" 
-          element={isAuthenticated ? <EvaluationForm /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/reports" 
-          element={isAuthenticated ? <Reports /> : <Navigate to="/login" />} 
-        />
-        <Route
-          path="/settings"
-          element={isAuthenticated ? <Settings /> : <Navigate to="/login" />}
-        />
-        <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
-        <Route path="*" element={<NotFound/>} />
-      </Routes>
-      <Toaster />
-    </Router>
-  );
+		<Router>
+			<Routes>
+				<Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
+				<Route element={<ProtectedRoute />}>
+					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/evaluations" element={<Evaluations />} />
+					<Route path="/employees" element={<Employees />} />
+          <Route path="/departments" element={<Department />} />
+					<Route path="/profile" element={<Profile />} />
+					<Route path="/evaluation/:id" element={<EvaluationForm />} />
+					<Route path="/reports" element={<Reports />} />
+					<Route path="/settings" element={<Settings />} />
+				</Route>
+
+				<Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
+				<Route path="*" element={<NotFound />} />
+			</Routes>
+			<Toaster />
+		</Router>
+	);
 };
 
 export default App;
