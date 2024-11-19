@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "install-all": "cd client && bun install && cd ../api && bun install",
+    "install-backend": "cd ./api && bun install",
     "start-frontend": "cd client && bun start",
     "start-backend": "cd api && bun start",
     "start": "concurrently \"bun run start-frontend\" \"bun run start-backend\"",

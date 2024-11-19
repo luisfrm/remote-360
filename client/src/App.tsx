@@ -14,6 +14,8 @@ import Settings from './pages/Settings';
 import { setCredentials } from './features/auth/authSlice';
 import { useValidateTokenMutation } from './lib/api';
 import DotSpinner from './components/DotSpinner';
+import { Toaster } from 'sonner'
+
 
 const App: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -75,6 +77,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
+      <Toaster />
     </Router>
   );
 };
