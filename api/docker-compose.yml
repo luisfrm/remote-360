@@ -9,10 +9,10 @@ services:
     volumes:
       - mongo-data:/data/db
     networks:
-      - mongo-network
+      - app-network
 
 volumes:
-  mongo-data:
+  app-data:
 
 networks:
-  mongo-network:
+  app-network:
