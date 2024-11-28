@@ -6,8 +6,9 @@
     "install-all": "cd client && bun install && cd ../api && bun install",
     "install-backend": "cd ./api && bun install",
     "start-frontend": "cd client && bun start",
-    "start-backend": "concurrently \"cd api && bun run start-docker\" \"cd api && bun run start\"",
-    "start": "concurrently \"bun run start-frontend\" \"bun run start-backend\"",
+    "start-backend": "cd api && bun start",
+    "start-backend-compose": "concurrently \"cd api && bun run start-docker\" \"cd api && bun run start\"",
+    "start": "concurrently \"bun run start-frontend\" \"bun run start-backend-compose\"",
     "test-frontend": "cd client && bun run test",
     "test-backend": "cd api && bun run test",
     "test": "concurrently \"bun run test-frontend\" \"bun run test-backend\""
