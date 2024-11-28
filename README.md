@@ -27,8 +27,8 @@ Este proyecto utiliza Node.js, MongoDB, Docker y Docker Compose para crear un en
     Crea un archivo `.env` en la raíz del proyecto y define las variables necesarias. Por ejemplo:
 
     ```env
-    MONGO_URI=mongodb://mongodb:27017/tu-base-de-datos
-    PORT=3000
+    MONGO_URI=mongodb://localhost:27017/remote360
+    PORT=4506
     ```
 
 ## Uso
@@ -36,6 +36,12 @@ Este proyecto utiliza Node.js, MongoDB, Docker y Docker Compose para crear un en
 ### Ejecutar la Aplicación
 
 1. **Iniciar Servicios con Docker Compose**:
+    ```bash
+    docker-compose up 
+    ```
+
+    Tambien puedes agregar el flag `-d` para que la aplicación se ejecute en segundo plano.
+
     ```bash
     docker-compose up -d
     ```
@@ -56,12 +62,7 @@ Una vez que los contenedores estén en funcionamiento, la aplicación Node.js de
     docker-compose up -d mongodb
     ```
 
-- **Iniciar la Aplicación Node.js**:
-    ```bash
-    docker-compose up -d nodeapp
-    ```
-
-- **Iniciar Ambos Servicios**:
+- **Iniciar Todos los Servicios**:
     ```bash
     npm run start-backend
     ```
@@ -71,8 +72,6 @@ Una vez que los contenedores estén en funcionamiento, la aplicación Node.js de
 El archivo `docker-compose.yml` se configura de la siguiente manera:
 
 ```yaml
-version: '3.8'  # Puedes usar cualquier versión compatible con Docker Compose
-
 services:
   mongodb:
     image: mongo:latest
@@ -85,7 +84,7 @@ services:
       - app-network
 
 volumes:
-  app-data:
+  mongo-data:
 
 networks:
   app-network:
